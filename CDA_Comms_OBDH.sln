@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Comms", "Link_budget\Comms.pyproj", "{ABA6FA07-FE99-4F40-B7AD-ADC191F3FF29}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Comms_Project", "Link_budget\Comms_Project.pyproj", "{ABA6FA07-FE99-4F40-B7AD-ADC191F3FF29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
