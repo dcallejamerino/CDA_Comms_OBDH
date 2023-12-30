@@ -36,7 +36,7 @@ eta_t_S = 0       # eta_t - transmit feeder gain (dB)
 eta_r_S = 0       # eta_r - receive feeder gain (dB)
 Lt_S = 1          # Lt - transmitt feeder loss (dB)
 Lr_S = 1          # Lr - receive feeder loss (dB) 
-Ladd_S = 2        # Ladd - additional losses (dB)
+Ladd_S = 1        # Ladd - additional losses (dB)
 gamma_S = 1       # gamma - nose bandwith constant
 
         #QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E5 requires SNR 10
@@ -52,7 +52,7 @@ eta_t_U = 0       # eta_t - transmitt feeder gain (dB)
 eta_r_U = 0       # eta_r - receive feeder gain (dB)
 Lt_U = 1          # Lt - transmitt feeder loss (dB)
 Lr_U = 1          # Lr - receive feeder loss (dB) 
-Ladd_U = 2        # Ladd - additional losses (dB)
+Ladd_U = 1        # Ladd - additional losses (dB)
 gamma_U = 1       # gamma - nose bandwith constant
 
         #GFSK modulation (GMSK) for a BER 1E5 requires SNR 20
@@ -78,7 +78,7 @@ print(f"BIT RATE U-BAND SCIENCE DOWNLINK  (Hz - bps): {B_U}")
 
 # Calculate the link margin, the difference between the expected value of Eb/N0 calculated and the Eb/N0 required (including implementation loss).
 # Add 1 to 2 dB to the theoretical value given in the last step for implementation losses
-Implementation_losses = 1
+Implementation_losses = 2
 S_DOWNLINK_MARGIN = MaxSNR_S-10-Implementation_losses
 U_DOWNLINK_MARGIN = MaxSNR_U-20-Implementation_losses
 print(f"S-BAND DOWNLINK MARGIN (dB): {S_DOWNLINK_MARGIN}")
