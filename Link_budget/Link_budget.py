@@ -30,7 +30,7 @@ f0_S = 2.245e9    # f0 - carrier frequency (Hz)
 Pt_S = 1          # Pt - transmitted power (Watts)   
 Gt_S = 6.5        # Gt - transmit antenna gain (dBi) 
 Gr_S = 35.4       # Gr - receive antenna gain  (dBi) 
-B_S =  3.25e6     # B - transmit bandwidth (Hz) QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E-5 
+B_S =  2.20e6     # B - transmit bandwidth (Hz) QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E-5 
 Tnoise_S = 1000   # Tnoise - noise temperature (K)
 eta_t_S = 0       # eta_t - transmit feeder gain (dB)
 eta_r_S = 0       # eta_r - receive feeder gain (dB)
@@ -120,13 +120,20 @@ def create_info_table(master, data, row):
 
     columns = ("Parameter", "S-Band Value - SCIENCE", "UHF-Band Value - TTC")
 
-    tree = ttk.Treeview(frame, columns=columns, show="headings")
+    tree = ttk.Treeview(frame, columns=columns, show="headings",height=len(data) + 2)
+    
+    tree.column("Parameter", width=400)
+    tree.column("S-Band Value - SCIENCE", width=400)
+    tree.column("UHF-Band Value - TTC", width=400)
+
+
     for col in columns:
         tree.heading(col, text=col)
 
     for item in data:
         tree.insert("", "end", values=item)
 
+    
     tree.pack()
 
 # Main window
