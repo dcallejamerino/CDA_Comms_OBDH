@@ -30,12 +30,12 @@ f0_S = 2.245e9    # f0 - carrier frequency (Hz)
 Pt_S = 1          # Pt - transmitted power (Watts)   
 Gt_S = 6.5        # Gt - transmit antenna gain (dBi) 
 Gr_S = 35.4       # Gr - receive antenna gain  (dBi) 
-B_S =  2.20e6     # B - transmit bandwidth (Hz) QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E-5 
+B_S =  1.0e6      # B - transmit bandwidth (Hz) QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E-5 
 Tnoise_S = 1000   # Tnoise - noise temperature (K)
 eta_t_S = 0       # eta_t - transmit feeder gain (dB)
 eta_r_S = 0       # eta_r - receive feeder gain (dB)
-Lt_S = 1          # Lt - transmitt feeder loss (dB)
-Lr_S = 1          # Lr - receive feeder loss (dB) 
+Lt_S = 1          # Lt - transmiter feeder loss (dB)
+Lr_S = 1          # Lr - receiver feeder loss (dB) 
 Ladd_S = 1        # Ladd - additional losses (dB)
 gamma_S = 1       # gamma - nose bandwith constant
 
@@ -50,8 +50,8 @@ B_U =  19200      # B - transmit bandwidth (Hz) GFSK modulation (GMSK)
 Tnoise_U = 1000   # Tnoise - noise temperature (K)
 eta_t_U = 0       # eta_t - transmitt feeder gain (dB)
 eta_r_U = 0       # eta_r - receive feeder gain (dB)
-Lt_U = 1          # Lt - transmitt feeder loss (dB)
-Lr_U = 1          # Lr - receive feeder loss (dB) 
+Lt_U = 1          # Lt - transmiter feeder loss (dB)
+Lr_U = 1          # Lr - receiver feeder loss (dB) 
 Ladd_U = 1        # Ladd - additional losses (dB)
 gamma_U = 1       # gamma - nose bandwith constant
 
@@ -78,7 +78,7 @@ print(f"BIT RATE U-BAND SCIENCE DOWNLINK  (Hz - bps): {B_U}")
 
 # Calculate the link margin, the difference between the expected value of Eb/N0 calculated and the Eb/N0 required (including implementation loss).
 # Add 1 to 2 dB to the theoretical value given in the last step for implementation losses
-Implementation_losses = 2
+Implementation_losses = 1
 S_DOWNLINK_MARGIN = MaxSNR_S-10-Implementation_losses
 U_DOWNLINK_MARGIN = MaxSNR_U-20-Implementation_losses
 print(f"S-BAND DOWNLINK MARGIN (dB): {S_DOWNLINK_MARGIN}")
@@ -102,9 +102,18 @@ else:
 phi = np.pi*np.array(range(0,181,5))/180
 plt.plot(180 * phi / np.pi, snr_S, label=f'{f0_S/1e6} MHz S-BAND', color='orange')
 plt.axhline(y=10, color='orange', linestyle='dashed', label='QPSK for a BER 1E5 requires SNR 10')
+plt.axhline(y=10+Implementation_losses+3, color='red', linestyle='dashed', label='DOWNLINK MARGIN>3dB)')
+
+plt.title('Expected SNRs')
+plt.xlabel('Elevation angles (degrees)')
+plt.ylabel('SNR (dB)')
+plt.legend()
+plt.grid()
+plt.show()
 
 plt.plot(180 * phi / np.pi, snr_U, label=f'{f0_U/1e6} MHz UHF-BAND', color='blue')
 plt.axhline(y=20, color='blue', linestyle='dashed', label='GMSK for a BER 1E5 requires SNR 20')
+plt.axhline(y=20+Implementation_losses+3, color='red', linestyle='dashed', label='DOWNLINK MARGIN>3dB)')
 
 plt.title('Expected SNRs')
 plt.xlabel('Elevation angles (degrees)')
@@ -161,7 +170,7 @@ print("--bye--")
 
 
 
-# path_loss = l_d.path_loss(f0)
+# path_loss = l_d.path_loss(f0_S)
 # phi = np.pi*np.array(range(0,181,5))/180
 # plt.plot(180*phi/np.pi, path_loss, '-o')
 # plt.title('Path_loss')
