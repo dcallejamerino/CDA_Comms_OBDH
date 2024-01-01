@@ -37,7 +37,7 @@ eta_r_S = 1       # eta_r - receive feeder gain (dB)
 Lt_S = 1          # Lt - transmiter feeder loss (dB)
 Lr_S = 1          # Lr - receiver feeder loss (dB) 
 Ladd_S = 1        # Ladd - additional losses (dB)
-gamma_S = 1       # gamma - nose bandwith constant
+gamma_S = 1.002   # gamma - receiver noise bandwith constant
 
         #QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E5 requires SNR 10
 
@@ -53,7 +53,7 @@ eta_r_U = 0       # eta_r - receive feeder gain (dB)
 Lt_U = 1          # Lt - transmiter feeder loss (dB)
 Lr_U = 1          # Lr - receiver feeder loss (dB) 
 Ladd_U = 1        # Ladd - additional losses (dB)
-gamma_U = 1       # gamma - nose bandwith constant
+gamma_U = 1.002   # gamma - receiver noise bandwith constant
 
         #GFSK modulation (GMSK) for a BER 1E5 requires SNR 20
 
@@ -63,14 +63,14 @@ f0_U_up = 400e6      # f0 - carrier frequency (Hz)
 Pt_U_up = 10         # Pt - transmitted power (Watts)
 Gt_U_up = 16.3       # Gt - transmit antenna gain (dBi) 
 Gr_U_up = 0          # Gr - receive antenna gain  (dBi) 
-B_U_up =  9600       # B - transmit bandwidth (Hz) GFSK modulation (GMSK)
+B_U_up =  19200      # B - transmit bandwidth (Hz) GFSK modulation (GMSK)
 Tnoise_U_up = 1000   # Tnoise - noise temperature (K)
 eta_t_U_up = 0       # eta_t - transmitt feeder gain (dB)
 eta_r_U_up = 0       # eta_r - receive feeder gain (dB)
 Lt_U_up = 1          # Lt - transmiter feeder loss (dB)
 Lr_U_up = 1          # Lr - receiver feeder loss (dB) 
 Ladd_U_up = 2        # Ladd - additional losses (dB)
-gamma_U_up = 1       # gamma - nose bandwith constant
+gamma_U_up = 1.57    # gamma - receiver noise bandwith constant
 
         #GFSK modulation (GMSK) for a BER 1E5 requires SNR 20
 
