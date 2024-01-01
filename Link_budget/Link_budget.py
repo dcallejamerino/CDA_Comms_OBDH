@@ -57,12 +57,30 @@ gamma_U = 1       # gamma - nose bandwith constant
 
         #GFSK modulation (GMSK) for a BER 1E5 requires SNR 20
 
+
+## UPLINK TTC  ## UHF-BAND ALEN SPACE TRISKEL OBC+TTC+OBSW
+f0_U_up = 400e6      # f0 - carrier frequency (Hz)
+Pt_U_up = 10         # Pt - transmitted power (Watts)
+Gt_U_up = 16.3       # Gt - transmit antenna gain (dBi) 
+Gr_U_up = 0          # Gr - receive antenna gain  (dBi) 
+B_U_up =  9600       # B - transmit bandwidth (Hz) GFSK modulation (GMSK)
+Tnoise_U_up = 1000   # Tnoise - noise temperature (K)
+eta_t_U_up = 0       # eta_t - transmitt feeder gain (dB)
+eta_r_U_up = 0       # eta_r - receive feeder gain (dB)
+Lt_U_up = 1          # Lt - transmiter feeder loss (dB)
+Lr_U_up = 1          # Lr - receiver feeder loss (dB) 
+Ladd_U_up = 2        # Ladd - additional losses (dB)
+gamma_U_up = 1       # gamma - nose bandwith constant
+
+        #GFSK modulation (GMSK) for a BER 1E5 requires SNR 20
+
 #Outputs:
      # snr - expected SNR (dB)
      # EIRP - equivalent isolated radiated power (dBm)
 
 snr_S, EIRP_S = l_d.expected_snr(f0_S, Pt_S, Gt_S, Gr_S, B_S, Tnoise_S,eta_t_S,eta_r_S, Lt_S, Lr_S, Ladd_S, gamma_S)
 snr_U, EIRP_U = l_d.expected_snr(f0_U, Pt_U, Gt_U, Gr_U, B_U, Tnoise_U,eta_t_U,eta_r_U, Lt_U, Lr_U, Ladd_U, gamma_U)
+snr_U_up, EIRP_U_up = l_d.expected_snr(f0_U_up, Pt_U_up, Gt_U_up, Gr_U_up, B_U_up, Tnoise_U_up,eta_t_U_up,eta_r_U_up, Lt_U_up, Lr_U_up, Ladd_U_up, gamma_U_up)
 
 ###### RESULTS AND PLOTS ######
 
@@ -74,15 +92,22 @@ print(f"BIT RATE S-BAND SCIENCE DOWNLINK  (Hz - bps): {B_S}")
 MaxSNR_U = max(snr_U)
 print(f"SNR UHF-BAND TTC DOWNLINK (dB): {MaxSNR_U}") # a higher signal-to-noise ratio is generally preferred in most applications as it indicates a stronger and more reliable signal relative to the background noise.
 print(f"EIRP UHF-BAND TTC DOWNLINK  (dBm): {EIRP_U}")
-print(f"BIT RATE U-BAND SCIENCE DOWNLINK  (Hz - bps): {B_U}")
+print(f"BIT RATE UHF-BAND TTC DOWNLINK  (Hz - bps): {B_U}")
+
+MaxSNR_U_up = max(snr_U_up)
+print(f"SNR UHF-BAND TTC UPLINK (dB): {MaxSNR_U_up}") # a higher signal-to-noise ratio is generally preferred in most applications as it indicates a stronger and more reliable signal relative to the background noise.
+print(f"EIRP UHF-BAND TTC UPLINK  (dBm): {EIRP_U_up}")
+print(f"BIT RATE UHF-BAND TTC UPLINK  (Hz - bps): {B_U_up}")
 
 # Calculate the link margin, the difference between the expected value of Eb/N0 calculated and the Eb/N0 required (including implementation loss).
 # Add 1 to 2 dB to the theoretical value given in the last step for implementation losses
 Implementation_losses = 1
 S_DOWNLINK_MARGIN = MaxSNR_S-10-Implementation_losses
 U_DOWNLINK_MARGIN = MaxSNR_U-20-Implementation_losses
+U_UPLINK_MARGIN = MaxSNR_U_up-20-Implementation_losses
 print(f"S-BAND DOWNLINK MARGIN (dB): {S_DOWNLINK_MARGIN}")
 print(f"UHF-BAND DOWNLINK MARGIN (dB): {U_DOWNLINK_MARGIN}")
+print(f"UHF-BAND UPLINK MARGIN (dB): {U_UPLINK_MARGIN}")
 
 if S_DOWNLINK_MARGIN > 3:
     status_S = "S-BAND DOWNLINK MARGIN OK"
@@ -97,6 +122,13 @@ if U_DOWNLINK_MARGIN > 3:
 else:
     status_U = "U-BAND DOWNLINK MARGIN NOT OK"
     print("U-BAND DOWNLINK MARGIN NOT OK: Adjust imput parameters until the margin is at least 3 dB greater than the estimated value")
+    
+if U_UPLINK_MARGIN > 3:
+    status_U = "U-BAND UPLINK MARGIN OK"
+    print("U-BAND UPLINK MARGIN OK")
+else:
+    status_U = "U-BAND UPLINK MARGIN NOT OK"
+    print("U-BAND UPLINK MARGIN NOT OK: Adjust imput parameters until the margin is at least 3 dB greater than the estimated value")
 
 # PLOTS
 phi = np.pi*np.array(range(0,181,5))/180
@@ -104,7 +136,7 @@ plt.plot(180 * phi / np.pi, snr_S, label=f'{f0_S/1e6} MHz S-BAND', color='orange
 plt.axhline(y=10, color='orange', linestyle='dashed', label='QPSK for a BER 1E5 requires SNR 10')
 plt.axhline(y=10+Implementation_losses+3, color='red', linestyle='dashed', label='DOWNLINK MARGIN>3dB)')
 
-plt.title('Expected SNRs')
+plt.title('Expected SNRs SBAND DOWNLINK')
 plt.xlabel('Elevation angles (degrees)')
 plt.ylabel('SNR (dB)')
 plt.legend()
@@ -115,7 +147,18 @@ plt.plot(180 * phi / np.pi, snr_U, label=f'{f0_U/1e6} MHz UHF-BAND', color='blue
 plt.axhline(y=20, color='blue', linestyle='dashed', label='GMSK for a BER 1E5 requires SNR 20')
 plt.axhline(y=20+Implementation_losses+3, color='red', linestyle='dashed', label='DOWNLINK MARGIN>3dB)')
 
-plt.title('Expected SNRs')
+plt.title('Expected SNRs UHF DOWNLINK')
+plt.xlabel('Elevation angles (degrees)')
+plt.ylabel('SNR (dB)')
+plt.legend()
+plt.grid()
+plt.show()
+
+plt.plot(180 * phi / np.pi, snr_U, label=f'{f0_U/1e6} MHz UHF-BAND', color='blue')
+plt.axhline(y=20, color='blue', linestyle='dashed', label='GMSK for a BER 1E5 requires SNR 20')
+plt.axhline(y=20+Implementation_losses+3, color='red', linestyle='dashed', label='UPLINK MARGIN>3dB)')
+
+plt.title('Expected SNRs UHF UPLINK')
 plt.xlabel('Elevation angles (degrees)')
 plt.ylabel('SNR (dB)')
 plt.legend()
