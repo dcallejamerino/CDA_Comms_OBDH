@@ -29,14 +29,14 @@ l_d = LinkBudget(h, mode,L_node,incl,lat_gs,long_gs,eps_min)
 f0_S = 2.245e9    # f0 - carrier frequency (Hz)
 Pt_S = 1          # Pt - transmitted power (Watts)   
 Gt_S = 6.5        # Gt - transmit antenna gain (dBi) 
-Gr_S = 40       # Gr - receive antenna gain  (dBi) 35.4
-B_S =  3.6e6      # B - transmit bandwidth (Hz) QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E-5 -> MAX 4.3Mbps
+Gr_S = 40         # Gr - receive antenna gain  (dBi) 35.4
+B_S =  3.6e6      # B - transmit bandwidth (bps) QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E-5 -> MAX 4.3Mbps
 Tnoise_S = 1000   # Tnoise - noise temperature (K)
 eta_t_S = 0       # eta_t - transmit feeder gain (dB)
 eta_r_S = 1       # eta_r - receive feeder gain (dB)
 Lt_S = 1          # Lt - transmiter feeder loss (dB)
 Lr_S = 1          # Lr - receiver feeder loss (dB) 
-Ladd_S = 1        # Ladd - additional losses (dB)
+Ladd_S = 2        # Ladd - additional losses (dB)
 gamma_S = 1.002   # gamma - receiver noise bandwith constant
 
         #QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E5 requires SNR 10
@@ -46,13 +46,13 @@ f0_U = 400e6      # f0 - carrier frequency (Hz)
 Pt_U = 1          # Pt - transmitted power (Watts)
 Gt_U = 0          # Gt - transmit antenna gain (dBi) 
 Gr_U = 16.3       # Gr - receive antenna gain  (dBi) 
-B_U =  9600      # B - transmit bandwidth (Hz) GFSK modulation (GMSK)
+B_U =  9600      # B - transmit bandwidth (bps) GFSK modulation (GMSK)
 Tnoise_U = 1000   # Tnoise - noise temperature (K)
 eta_t_U = 0       # eta_t - transmitt feeder gain (dB)
 eta_r_U = 0       # eta_r - receive feeder gain (dB)
 Lt_U = 1          # Lt - transmiter feeder loss (dB)
 Lr_U = 1          # Lr - receiver feeder loss (dB) 
-Ladd_U = 1        # Ladd - additional losses (dB)
+Ladd_U = 2        # Ladd - additional losses (dB)
 gamma_U = 1.002   # gamma - receiver noise bandwith constant
 
         #GFSK modulation (GMSK) for a BER 1E5 requires SNR 20
@@ -63,7 +63,7 @@ f0_U_up = 400e6      # f0 - carrier frequency (Hz)
 Pt_U_up = 10         # Pt - transmitted power (Watts)
 Gt_U_up = 16.3       # Gt - transmit antenna gain (dBi) 
 Gr_U_up = 0          # Gr - receive antenna gain  (dBi) 
-B_U_up =  19200      # B - transmit bandwidth (Hz) GFSK modulation (GMSK)
+B_U_up =  19200      # B - transmit bandwidth (bps) GFSK modulation (GMSK)
 Tnoise_U_up = 1000   # Tnoise - noise temperature (K)
 eta_t_U_up = 0       # eta_t - transmitt feeder gain (dB)
 eta_r_U_up = 0       # eta_r - receive feeder gain (dB)
@@ -87,21 +87,21 @@ snr_U_up, EIRP_U_up = l_d.expected_snr(f0_U_up, Pt_U_up, Gt_U_up, Gr_U_up, B_U_u
 MaxSNR_S = max(snr_S)
 print(f"SNR S-BAND SCIENCE DOWNLINK (dB): {MaxSNR_S}") # a higher signal-to-noise ratio is generally preferred in most applications as it indicates a stronger and more reliable signal relative to the background noise.
 print(f"EIRP S-BAND SCIENCE DOWNLINK  (dBm): {EIRP_S}")
-print(f"BIT RATE S-BAND SCIENCE DOWNLINK  (Hz - bps): {B_S}")
+print(f"BIT RATE S-BAND SCIENCE DOWNLINK  (bps): {B_S}")
 
 MaxSNR_U = max(snr_U)
 print(f"SNR UHF-BAND TTC DOWNLINK (dB): {MaxSNR_U}") # a higher signal-to-noise ratio is generally preferred in most applications as it indicates a stronger and more reliable signal relative to the background noise.
 print(f"EIRP UHF-BAND TTC DOWNLINK  (dBm): {EIRP_U}")
-print(f"BIT RATE UHF-BAND TTC DOWNLINK  (Hz - bps): {B_U}")
+print(f"BIT RATE UHF-BAND TTC DOWNLINK  (bps): {B_U}")
 
 MaxSNR_U_up = max(snr_U_up)
 print(f"SNR UHF-BAND TTC UPLINK (dB): {MaxSNR_U_up}") # a higher signal-to-noise ratio is generally preferred in most applications as it indicates a stronger and more reliable signal relative to the background noise.
 print(f"EIRP UHF-BAND TTC UPLINK  (dBm): {EIRP_U_up}")
-print(f"BIT RATE UHF-BAND TTC UPLINK  (Hz - bps): {B_U_up}")
+print(f"BIT RATE UHF-BAND TTC UPLINK  (bps): {B_U_up}")
 
 # Calculate the link margin, the difference between the expected value of Eb/N0 calculated and the Eb/N0 required (including implementation loss).
 # Add 1 to 2 dB to the theoretical value given in the last step for implementation losses
-Implementation_losses = 1
+Implementation_losses = 0
 S_DOWNLINK_MARGIN = MaxSNR_S-10-Implementation_losses
 U_DOWNLINK_MARGIN = MaxSNR_U-20-Implementation_losses
 U_UPLINK_MARGIN = MaxSNR_U_up-20-Implementation_losses
@@ -196,7 +196,7 @@ main_window.title("Downlink Analysis")
 table_data = [
     ("SNR DOWNLINK (dB)", round(MaxSNR_S, 2), round(MaxSNR_U, 2)),
     ("EIRP DOWNLINK (dBm)", EIRP_S, EIRP_U),
-    ("BIT RATE DOWNLINK (Hz - bps)", B_S, B_U),
+    ("BIT RATE DOWNLINK (bps)", B_S, B_U),
     ("DOWNLINK MARGIN (dB)", round(S_DOWNLINK_MARGIN, 2), round(U_DOWNLINK_MARGIN, 2)),
     ("STATUS", status_S, status_U),
 ]
