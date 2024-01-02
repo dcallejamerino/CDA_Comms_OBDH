@@ -221,3 +221,69 @@ print("--bye--")
 # plt.ylabel('Path_loss (dB)')
 # plt.grid()
 # plt.show()
+
+
+
+# ---------------------------- # PLOTS # ---------------------------- #
+
+## DOWNLINK SCIENCE  ## S-BAND ISIS-TXS2-DSH-0001, version 2.2 
+f0_S1 = 2.245e9    # f0 - carrier frequency (Hz)
+Pt_S1 = 1          # Pt - transmitted power (Watts)   
+Gt_S1 = 6.5        # Gt - transmit antenna gain (dBi) 
+Gr_S1 = 40         # Gr - receive antenna gain  (dBi) 35.4
+B_S1 =  4.0e6      # B - transmit bandwidth (bps) QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E-5 -> MAX 4.3Mbps
+Tnoise_S1 = 1000   # Tnoise - noise temperature (K)
+eta_t_S1 = 0       # eta_t - transmit feeder gain (dB)
+eta_r_S1 = 1       # eta_r - receive feeder gain (dB)
+Lt_S1 = 1          # Lt - transmiter feeder loss (dB)
+Lr_S1 = 1          # Lr - receiver feeder loss (dB) 
+Ladd_S1 = 2        # Ladd - additional losses (dB)
+gamma_S1 = 1.002   # gamma - receiver noise bandwith constant
+
+## DOWNLINK SCIENCE  ## S-BAND ISIS-TXS2-DSH-0001, version 2.2 
+f0_S2 = 2.245e9    # f0 - carrier frequency (Hz)
+Pt_S2 = 1          # Pt - transmitted power (Watts)   
+Gt_S2 = 6.5        # Gt - transmit antenna gain (dBi) 
+Gr_S2 = 40         # Gr - receive antenna gain  (dBi) 35.4
+B_S2 =  3.0e6      # B - transmit bandwidth (bps) QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E-5 -> MAX 4.3Mbps
+Tnoise_S2 = 1000   # Tnoise - noise temperature (K)
+eta_t_S2 = 0       # eta_t - transmit feeder gain (dB)
+eta_r_S2 = 1       # eta_r - receive feeder gain (dB)
+Lt_S2 = 1          # Lt - transmiter feeder loss (dB)
+Lr_S2 = 1          # Lr - receiver feeder loss (dB) 
+Ladd_S2 = 2        # Ladd - additional losses (dB)
+gamma_S2 = 1.002   # gamma - receiver noise bandwith constant
+
+## DOWNLINK SCIENCE  ## S-BAND ISIS-TXS2-DSH-0001, version 2.2 
+f0_S3 = 2.245e9    # f0 - carrier frequency (Hz)
+Pt_S3 = 1          # Pt - transmitted power (Watts)   
+Gt_S3 = 6.5        # Gt - transmit antenna gain (dBi) 
+Gr_S3 = 40         # Gr - receive antenna gain  (dBi) 35.4
+B_S3 =  2.0e6      # B - transmit bandwidth (bps) QPSK, RS(255, 2223)  +  C(7, 1/2) for a BER 1E-5 -> MAX 4.3Mbps
+Tnoise_S3 = 1000   # Tnoise - noise temperature (K)
+eta_t_S3 = 0       # eta_t - transmit feeder gain (dB)
+eta_r_S3 = 1       # eta_r - receive feeder gain (dB)
+Lt_S3 = 1          # Lt - transmiter feeder loss (dB)
+Lr_S3 = 1          # Lr - receiver feeder loss (dB) 
+Ladd_S3 = 2        # Ladd - additional losses (dB)
+gamma_S3 = 1.002   # gamma - receiver noise bandwith constant
+
+
+snr_S1, EIRP_S1 = l_d.expected_snr(f0_S1, Pt_S1, Gt_S1, Gr_S1, B_S1, Tnoise_S1,eta_t_S1,eta_r_S1, Lt_S1, Lr_S1, Ladd_S1, gamma_S1)
+snr_S2, EIRP_S2 = l_d.expected_snr(f0_S2, Pt_S2, Gt_S2, Gr_S2, B_S2, Tnoise_S2,eta_t_S2,eta_r_S2, Lt_S2, Lr_S2, Ladd_S2, gamma_S2)
+snr_S3, EIRP_S3 = l_d.expected_snr(f0_S3, Pt_S3, Gt_S3, Gr_S3, B_S3, Tnoise_S3,eta_t_S3,eta_r_S3, Lt_S3, Lr_S3, Ladd_S3, gamma_S3)
+
+
+phi = np.pi*np.array(range(0,181,5))/180
+plt.plot(180 * phi / np.pi, snr_S1, label=f'{B_S1/1e6} Mbps - 2.245GHz S-BAND', color='orange')
+plt.plot(180 * phi / np.pi, snr_S2, label=f'{B_S2/1e6} Mbps - 2.245GHz S-BAND', color='blue')
+plt.plot(180 * phi / np.pi, snr_S3, label=f'{B_S3/1e6} Mbps - 2.245GHz S-BAND', color='yellow')
+plt.axhline(y=10, color='pink', linestyle='dashed', label='QPSK for a BER 1E5 requires SNR 10')
+plt.axhline(y=10+Implementation_losses+3, color='red', linestyle='dashed', label='DOWNLINK MARGIN>3dB)')
+
+plt.title('Expected SNRs SBAND DOWNLINK')
+plt.xlabel('Elevation angles (degrees)')
+plt.ylabel('SNR (dB)')
+plt.legend()
+plt.grid()
+plt.show()
